@@ -1,4 +1,5 @@
 import { COOKIE_NAME } from "@shared/const";
+import { stripeRouter } from "./stripe-router";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
@@ -393,6 +394,9 @@ export const appRouter = router({
         return { success: true };
       }),
   }),
+
+  // ============= STRIPE PAYMENTS =============
+  stripe: stripeRouter,
 
   // ============= PORTFOLIO =============
   portfolio: router({

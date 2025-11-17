@@ -191,3 +191,49 @@ export const portfolioItems = mysqlTable("portfolioItems", {
 
 export type PortfolioItem = typeof portfolioItems.$inferSelect;
 export type InsertPortfolioItem = typeof portfolioItems.$inferInsert;
+
+/**
+ * Orders table - Tracks all purchases and payments
+ */
+export const orders = mysqlTable("orders", {
+  id: int("id").autoincrement().primaryKey(),
+  orderNumber: varchar("order_number", { length: 50 }).notNull().unique(),
+  invoiceNumber: varchar("invoice_number", { length: 50 }).notNull().unique(),
+  userId: int("user_id").references(() => users.id),
+  projectId: int("project_id").references(() => projects.id),
+  customerName: varchar("customer_name", { length: 255 }).notNull(),
+  customerEmail: varchar("customer_email", { length: 320 }).notNull(),
+  orderType: mysqlEnum("order_type", ["product", "deposit", "balance"]).notNull(),
+  status: mysqlEnum("status", ["pending", "paid", "failed", "refunded"]).default("pending").notNull(),
+  subtotal: int("subtotal").notNull(), // in cents
+  tax: int("tax").default(0).notNull(), // in cents
+  total: int("total").notNull(), // in cents
+  currency: varchar("currency", { length: 3 }).default("USD").notNull(),
+  stripeSessionId: varchar("stripe_session_id", { length: 255 }),
+  stripePaymentIntentId: varchar("stripe_payment_intent_id", { length: 255 }),
+  invoicePdfUrl: text("invoice_pdf_url"),
+  invoicePdfKey: text("invoice_pdf_key"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  paidAt: timestamp("paid_at"),
+});
+
+export type Order = typeof orders.$inferSelect;
+export type InsertOrder = typeof orders.$inferInsert;
+
+/**
+ * Order items - Line items for each order
+ */
+export const orderItems = mysqlTable("order_items", {
+  id: int("id").autoincrement().primaryKey(),
+  orderId: int("order_id").notNull().references(() => orders.id, { onDelete: "cascade" }),
+  productId: varchar("product_id", { length: 100 }).notNull(),
+  productName: varchar("product_name", { length: 255 }).notNull(),
+  description: text("description"),
+  quantity: int("quantity").default(1).notNull(),
+  unitPrice: int("unit_price").notNull(), // in cents
+  total: int("total").notNull(), // in cents
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type OrderItem = typeof orderItems.$inferSelect;
+export type InsertOrderItem = typeof orderItems.$inferInsert;

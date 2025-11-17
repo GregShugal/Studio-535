@@ -91,4 +91,18 @@
 - [x] Add responsive design for mobile timeline view (stacked layout)
 - [x] Add pulse animation to current milestone marker
 - [x] Test timeline on live site
-- [x] Save checkpoint and push to GitHub
+- [ ] Save checkpoint and push to GitHub
+
+## Feature: Automatic PDF Invoice Generation & Email
+- [x] Install PDF generation library (pdfkit)
+- [x] Create invoice template with Studio 535 branding
+- [x] Build PDF generation utility function
+- [x] Add invoice number generation logic
+- [x] Integrate PDF generation into Stripe webhook
+- [x] Upload invoice PDF to S3 storage
+- [x] Send owner notification with invoice link (email to customer requires email service)
+- [x] Create complete Stripe payment system with checkout sessions
+- [x] Add webhook endpoint at /api/stripe/webhook
+- [ ] Add invoice download link in admin dashboard
+- [ ] Test invoice generation with test purchase
+- [ ] Save checkpoint and push to GitHub
