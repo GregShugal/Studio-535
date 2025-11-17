@@ -105,4 +105,117 @@
 - [x] Add webhook endpoint at /api/stripe/webhook
 - [ ] Add invoice download link in admin dashboard
 - [ ] Test invoice generation with test purchase
+- [x] Save checkpoint and push to GitHub
+
+## Feature: Payment Buttons in Admin Dashboard
+- [x] Add payment section to ProjectDetail page
+- [x] Create deposit payment button (10%) with amount input
+- [x] Create balance payment button (90%) with amount input
+- [x] Integrate with Stripe checkout session creation
+- [x] Add Payments tab to admin dashboard
+- [x] Show calculated deposit and balance amounts
+- [x] Save checkpoint and push to GitHub
+
+## Feature 1: Client Portal
+- [x] Create client dashboard page with authentication
+- [x] Add project list view for clients (their projects only)
+- [x] Create client project detail page with status tracking
+- [x] Add design viewing interface for clients
+- [x] Display status updates and communication
+- [x] Add shipping/delivery tracking information
+- [x] Test client portal authentication and permissions
+- [x] Add 'My Projects' link to navigation
+- [ ] Save checkpoint
+
+## Feature 2: Quote Builder Tool
+- [ ] Create quote builder page in admin dashboard
+- [ ] Add pricing template management (CRUD)
+- [ ] Build interactive quote calculator with line items
+- [ ] Add material cost and labor hour inputs
+- [ ] Implement automatic markup/margin calculations
+- [ ] Generate PDF quotes with Studio 535 branding
+- [ ] Link quotes to projects
+- [ ] Test quote generation and PDF output
+- [ ] Save checkpoint
+
+## Feature 3: Enhanced Portfolio & Case Studies
+- [ ] Update portfolio schema for case studies
+- [ ] Add before/after image support
+- [ ] Create detailed project write-up fields
+- [ ] Add client testimonials to portfolio items
+- [ ] Implement category/material filtering
+- [ ] Add social media sharing buttons
+- [ ] Create case study detail page
+- [ ] Test portfolio filtering and display
+- [ ] Save checkpoint
+
+## Feature 4: Email Integration
+- [ ] Set up email service configuration
+- [ ] Create branded email templates for each workflow stage
+- [ ] Implement automatic invoice email delivery
+- [ ] Add quote approval reminder emails
+- [ ] Create project milestone update emails
+- [ ] Add payment receipt confirmation emails
+- [ ] Test email delivery for all scenarios
+- [ ] Save checkpoint
+
+## Feature 5: Calendar & Scheduling
+- [ ] Create calendar schema (events, appointments)
+- [ ] Build visual calendar component
+- [ ] Add project deadline tracking
+- [ ] Implement resource allocation (equipment, team)
+- [ ] Create client appointment booking system
+- [ ] Add automated deadline reminder emails
+- [ ] Test calendar functionality and bookings
+- [ ] Save checkpoint
+
+## Feature 6: Analytics Dashboard
+- [ ] Create analytics schema for metrics tracking
+- [ ] Build analytics dashboard page
+- [ ] Add revenue by project type charts
+- [ ] Calculate average project value and margins
+- [ ] Track conversion rate (inquiry to paid)
+- [ ] Add production time vs estimated time metrics
+- [ ] Implement client acquisition source tracking
+- [ ] Test analytics calculations and charts
+- [ ] Save checkpoint
+
+## Feature 7: Material Inventory System
+- [ ] Create inventory schema (materials, suppliers)
+- [ ] Build inventory management page
+- [ ] Add stock level tracking
+- [ ] Implement low-stock alerts
+- [ ] Add cost tracking per project
+- [ ] Create supplier management interface
+- [ ] Add reorder automation triggers
+- [ ] Test inventory tracking and alerts
+- [ ] Save checkpoint
+
+## Feature 8: Design Approval Workflow
+- [ ] Create design approval schema (versions, comments)
+- [ ] Build interactive design mockup viewer
+- [ ] Add annotation tools for client feedback
+- [ ] Implement version comparison view
+- [ ] Add approval signature functionality
+- [ ] Create revision history tracking
+- [ ] Integrate with client portal
+- [ ] Test approval workflow end-to-end
+- [ ] Save checkpoint
+
+## Final Integration & Testing
+- [ ] Test all features together
+- [ ] Verify authentication and permissions across all features
+- [ ] Performance testing with multiple users
+- [ ] Create comprehensive documentation
+- [ ] Final checkpoint and GitHub push
+
+## Feature: Client Messaging System
+- [x] Create messages table in database schema
+- [x] Add message creation and retrieval procedures
+- [x] Add notification for new client messages
+- [x] Build messaging UI component for client portal
+- [x] Add messaging interface to admin project detail page
+- [x] Implement real-time message updates (5-second polling)
+- [x] Add notification when new messages arrive
+- [x] Test messaging between client and admin
 - [ ] Save checkpoint and push to GitHub

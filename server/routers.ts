@@ -31,6 +31,8 @@ import {
   getFeaturedPortfolioItems,
   createIntakeAttachment,
   getIntakeAttachments,
+  createProjectMessage,
+  getProjectMessages,
 } from "./db";
 
 export const appRouter = router({
@@ -55,6 +57,12 @@ export const appRouter = router({
       if (ctx.user.role === "admin") {
         return allProjects;
       }
+      return allProjects.filter(p => p.clientEmail === ctx.user.email);
+    }),
+
+    getMyProjects: protectedProcedure.query(async ({ ctx }) => {
+      // Get projects for the current logged-in user
+      const allProjects = await getAllProjects();
       return allProjects.filter(p => p.clientEmail === ctx.user.email);
     }),
 
@@ -425,6 +433,44 @@ export const appRouter = router({
           featured: input.featured ? 1 : 0,
         });
         return { itemId, success: true };
+      }),
+  }),
+
+  // ============= MESSAGES =============
+  messages: router({
+    list: protectedProcedure
+      .input(z.object({ projectId: z.number() }))
+      .query(async ({ input }) => {
+        return await getProjectMessages(input.projectId);
+      }),
+
+    create: protectedProcedure
+      .input(
+        z.object({
+          projectId: z.number(),
+          message: z.string().min(1),
+        })
+      )
+      .mutation(async ({ input, ctx }) => {
+        if (!ctx.user) throw new Error("Not authenticated");
+        
+        const messageId = await createProjectMessage({
+          projectId: input.projectId,
+          senderOpenId: ctx.user.openId,
+          senderName: ctx.user.name || "Unknown",
+          senderRole: ctx.user.role || "user",
+          message: input.message,
+        });
+
+        // Notify owner of new client message if sender is not admin
+        if (ctx.user.role !== "admin") {
+          await notifyOwner({
+            title: "New Client Message",
+            content: `${ctx.user.name} sent a message on project #${input.projectId}:\n\n${input.message}`,
+          });
+        }
+
+        return { messageId, success: true };
       }),
   }),
 });

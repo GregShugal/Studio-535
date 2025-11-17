@@ -237,3 +237,19 @@ export const orderItems = mysqlTable("order_items", {
 
 export type OrderItem = typeof orderItems.$inferSelect;
 export type InsertOrderItem = typeof orderItems.$inferInsert;
+
+/**
+ * Project messages - Communication between clients and team
+ */
+export const projectMessages = mysqlTable("project_messages", {
+  id: int("id").autoincrement().primaryKey(),
+  projectId: int("project_id").notNull().references(() => projects.id, { onDelete: "cascade" }),
+  senderOpenId: varchar("sender_open_id", { length: 64 }).notNull(),
+  senderName: varchar("sender_name", { length: 255 }).notNull(),
+  senderRole: mysqlEnum("sender_role", ["admin", "user"]).notNull(),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type ProjectMessage = typeof projectMessages.$inferSelect;
+export type InsertProjectMessage = typeof projectMessages.$inferInsert;

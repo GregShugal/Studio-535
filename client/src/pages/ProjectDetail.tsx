@@ -154,12 +154,13 @@ export default function ProjectDetail() {
 
         {/* Workflow Tabs */}
         <Tabs defaultValue="intake" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="intake">Intake</TabsTrigger>
             <TabsTrigger value="quote">Quote</TabsTrigger>
             <TabsTrigger value="design">Design</TabsTrigger>
             <TabsTrigger value="production">Production</TabsTrigger>
             <TabsTrigger value="fulfillment">Fulfillment</TabsTrigger>
+            <TabsTrigger value="messages">Messages</TabsTrigger>
             <TabsTrigger value="payments">Payments</TabsTrigger>
           </TabsList>
 
@@ -486,6 +487,19 @@ export default function ProjectDetail() {
             </Card>
           </TabsContent>
 
+          {/* Messages Tab */}
+          <TabsContent value="messages">
+            <Card>
+              <CardHeader>
+                <CardTitle>Project Messages</CardTitle>
+                <CardDescription>Communicate with the client about this project</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <AdminMessageThread projectId={projectId} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Payments Tab */}
           <TabsContent value="payments">
             <Card>
@@ -659,6 +673,109 @@ function PaymentSection({ projectId }: { projectId: number }) {
           <li>You'll receive a notification when payment is successful</li>
           <li>Invoice PDF is automatically generated and stored</li>
         </ol>
+      </div>
+    </div>
+  );
+}
+
+
+/**
+ * Admin Message Thread Component
+ */
+function AdminMessageThread({ projectId }: { projectId: number }) {
+  const { user } = useAuth();
+  const [newMessage, setNewMessage] = useState("");
+  const utils = trpc.useUtils();
+
+  const { data: messages = [], isLoading } = trpc.messages.list.useQuery(
+    { projectId },
+    { enabled: !!user && projectId > 0, refetchInterval: 5000 }
+  );
+
+  const sendMessage = trpc.messages.create.useMutation({
+    onSuccess: () => {
+      setNewMessage("");
+      utils.messages.list.invalidate({ projectId });
+      toast.success("Message sent to client");
+    },
+    onError: (error) => {
+      toast.error(`Failed to send message: ${error.message}`);
+    },
+  });
+
+  const handleSend = () => {
+    if (!newMessage.trim()) return;
+    sendMessage.mutate({ projectId, message: newMessage });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="h-6 w-6 animate-spin text-[#8B6F47]" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Message History */}
+      <div className="space-y-4 max-h-96 overflow-y-auto">
+        {messages.length === 0 ? (
+          <p className="text-center text-muted-foreground py-8">
+            No messages yet. Start the conversation with your client!
+          </p>
+        ) : (
+          messages.map((msg: any) => (
+            <div
+              key={msg.id}
+              className={`flex ${msg.senderRole === "admin" ? "justify-end" : "justify-start"}`}
+            >
+              <div
+                className={`max-w-[70%] rounded-lg p-3 ${
+                  msg.senderRole === "admin"
+                    ? "bg-[#8B6F47] text-white"
+                    : "bg-gray-100 text-gray-900"
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-semibold">{msg.senderName}</span>
+                  <span className="text-xs opacity-70">
+                    {new Date(msg.createdAt).toLocaleString()}
+                  </span>
+                </div>
+                <p className="text-sm whitespace-pre-wrap">{msg.message}</p>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* New Message Input */}
+      <div className="flex gap-2">
+        <Textarea
+          placeholder="Type your message to the client..."
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
+          className="flex-1"
+          rows={3}
+        />
+        <Button
+          onClick={handleSend}
+          disabled={!newMessage.trim() || sendMessage.isPending}
+          className="bg-[#8B6F47] hover:bg-[#6B5437]"
+        >
+          {sendMessage.isPending ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            "Send"
+          )}
+        </Button>
       </div>
     </div>
   );

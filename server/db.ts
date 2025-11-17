@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, asc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, intakeAttachments, InsertIntakeAttachment } from "../drizzle/schema";
+import { InsertUser, users, intakeAttachments, InsertIntakeAttachment, projectMessages, InsertProjectMessage } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -293,4 +293,20 @@ export async function getFeaturedPortfolioItems() {
   const db = await getDb();
   if (!db) return [];
   return db.select().from(portfolioItems).where(eq(portfolioItems.featured, 1)).orderBy(desc(portfolioItems.displayOrder));
+}
+
+
+// ============= PROJECT MESSAGES =============
+
+export async function createProjectMessage(data: InsertProjectMessage) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(projectMessages).values(data);
+  return result[0].insertId;
+}
+
+export async function getProjectMessages(projectId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(projectMessages).where(eq(projectMessages.projectId, projectId)).orderBy(asc(projectMessages.createdAt));
 }
