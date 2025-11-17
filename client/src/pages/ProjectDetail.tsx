@@ -154,12 +154,13 @@ export default function ProjectDetail() {
 
         {/* Workflow Tabs */}
         <Tabs defaultValue="intake" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="intake">Intake</TabsTrigger>
             <TabsTrigger value="quote">Quote</TabsTrigger>
             <TabsTrigger value="design">Design</TabsTrigger>
             <TabsTrigger value="production">Production</TabsTrigger>
             <TabsTrigger value="fulfillment">Fulfillment</TabsTrigger>
+            <TabsTrigger value="payments">Payments</TabsTrigger>
           </TabsList>
 
           {/* Intake Tab */}
@@ -484,7 +485,180 @@ export default function ProjectDetail() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* Payments Tab */}
+          <TabsContent value="payments">
+            <Card>
+              <CardHeader>
+                <CardTitle>Payment Management</CardTitle>
+                <CardDescription>Generate payment links for deposits and final balance</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <PaymentSection projectId={projectId} />
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Payment Section Component
+ */
+function PaymentSection({ projectId }: { projectId: number }) {
+  const [depositAmount, setDepositAmount] = useState("");
+  const [balanceAmount, setBalanceAmount] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const createDepositMutation = trpc.stripe.createDepositSession.useMutation({
+    onSuccess: (data) => {
+      if (data.url) {
+        window.open(data.url, "_blank");
+        toast.success("Payment link generated! Opening in new tab...");
+      }
+      setIsProcessing(false);
+    },
+    onError: (error) => {
+      toast.error(`Failed to create payment link: ${error.message}`);
+      setIsProcessing(false);
+    },
+  });
+
+  const createBalanceMutation = trpc.stripe.createBalanceSession.useMutation({
+    onSuccess: (data) => {
+      if (data.url) {
+        window.open(data.url, "_blank");
+        toast.success("Payment link generated! Opening in new tab...");
+      }
+      setIsProcessing(false);
+    },
+    onError: (error) => {
+      toast.error(`Failed to create payment link: ${error.message}`);
+      setIsProcessing(false);
+    },
+  });
+
+  const handleDepositPayment = () => {
+    const amount = parseFloat(depositAmount);
+    if (isNaN(amount) || amount <= 0) {
+      toast.error("Please enter a valid amount");
+      return;
+    }
+    setIsProcessing(true);
+    const amountInCents = Math.round(amount * 100);
+    createDepositMutation.mutate({ projectId, totalAmount: amountInCents });
+  };
+
+  const handleBalancePayment = () => {
+    const amount = parseFloat(balanceAmount);
+    if (isNaN(amount) || amount <= 0) {
+      toast.error("Please enter a valid amount");
+      return;
+    }
+    setIsProcessing(true);
+    const amountInCents = Math.round(amount * 100);
+    createBalanceMutation.mutate({ projectId, totalAmount: amountInCents });
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Deposit Payment */}
+      <div className="border rounded-lg p-6 space-y-4">
+        <div>
+          <h3 className="text-lg font-semibold">Deposit Payment (10%)</h3>
+          <p className="text-sm text-muted-foreground mt-1">
+            Generate a payment link for the initial 10% deposit
+          </p>
+        </div>
+        <div className="flex gap-4 items-end">
+          <div className="flex-1">
+            <Label htmlFor="depositAmount">Total Project Amount ($)</Label>
+            <Input
+              id="depositAmount"
+              type="number"
+              placeholder="e.g., 5000"
+              value={depositAmount}
+              onChange={(e) => setDepositAmount(e.target.value)}
+              className="mt-2"
+            />
+            {depositAmount && !isNaN(parseFloat(depositAmount)) && (
+              <p className="text-sm text-muted-foreground mt-2">
+                Deposit amount: ${(parseFloat(depositAmount) * 0.1).toFixed(2)}
+              </p>
+            )}
+          </div>
+          <Button
+            onClick={handleDepositPayment}
+            disabled={isProcessing || !depositAmount}
+            className="bg-[#8B6F47] hover:bg-[#6B5437]"
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              "Generate Deposit Link"
+            )}
+          </Button>
+        </div>
+      </div>
+
+      {/* Balance Payment */}
+      <div className="border rounded-lg p-6 space-y-4">
+        <div>
+          <h3 className="text-lg font-semibold">Balance Payment (90%)</h3>
+          <p className="text-sm text-muted-foreground mt-1">
+            Generate a payment link for the final 90% balance upon completion
+          </p>
+        </div>
+        <div className="flex gap-4 items-end">
+          <div className="flex-1">
+            <Label htmlFor="balanceAmount">Total Project Amount ($)</Label>
+            <Input
+              id="balanceAmount"
+              type="number"
+              placeholder="e.g., 5000"
+              value={balanceAmount}
+              onChange={(e) => setBalanceAmount(e.target.value)}
+              className="mt-2"
+            />
+            {balanceAmount && !isNaN(parseFloat(balanceAmount)) && (
+              <p className="text-sm text-muted-foreground mt-2">
+                Balance amount: ${(parseFloat(balanceAmount) * 0.9).toFixed(2)}
+              </p>
+            )}
+          </div>
+          <Button
+            onClick={handleBalancePayment}
+            disabled={isProcessing || !balanceAmount}
+            className="bg-[#8B6F47] hover:bg-[#6B5437]"
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              "Generate Balance Link"
+            )}
+          </Button>
+        </div>
+      </div>
+
+      {/* Payment Instructions */}
+      <div className="bg-muted/50 rounded-lg p-4">
+        <h4 className="font-medium mb-2">How it works:</h4>
+        <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
+          <li>Enter the total project amount</li>
+          <li>Click the button to generate a secure Stripe payment link</li>
+          <li>Share the link with your client via email or message</li>
+          <li>Client completes payment through Stripe checkout</li>
+          <li>You'll receive a notification when payment is successful</li>
+          <li>Invoice PDF is automatically generated and stored</li>
+        </ol>
       </div>
     </div>
   );
