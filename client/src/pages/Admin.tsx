@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
 import { Link, useLocation } from "wouter";
-import { Loader2, Plus, Eye, ArrowLeft } from "lucide-react";
+import { Loader2, Plus, Eye, ArrowLeft, Calculator } from "lucide-react";
 import { getLoginUrl } from "@/const";
 
 export default function Admin() {
@@ -100,12 +100,20 @@ export default function Admin() {
             </p>
           </div>
           {user.role === "admin" && (
-            <Link href="/admin/new-project">
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                New Project
-              </Button>
-            </Link>
+            <div className="flex gap-3">
+              <Link href="/admin/quote-builder">
+                <Button variant="outline" className="border-[#8B6F47] text-[#8B6F47] hover:bg-[#8B6F47] hover:text-white">
+                  <Calculator className="w-4 h-4 mr-2" />
+                  Quote Builder
+                </Button>
+              </Link>
+              <Link href="/admin/new-project">
+                <Button>
+                  <Plus className="w-4 h-4 mr-2" />
+                  New Project
+                </Button>
+              </Link>
+            </div>
           )}
         </div>
 

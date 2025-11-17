@@ -13,6 +13,7 @@ import Admin from "./pages/Admin";
 import ProjectDetail from "./pages/ProjectDetail";
 import ClientPortal from "./pages/ClientPortal";
 import ClientProjectDetail from "./pages/ClientProjectDetail";
+import QuoteBuilder from "./pages/QuoteBuilder";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -24,6 +25,7 @@ function Router() {
       <Route path={"/portfolio"} component={Portfolio} />
       <Route path={"/process"} component={Process} />      <Route path={" /admin"} component={Admin} />
       <Route path={"/admin/project/:id"} component={ProjectDetail} />
+      <Route path={"/admin/quote-builder"} component={QuoteBuilder} />
       <Route path="/client-portal" component={ClientPortal} />
       <Route path="/client/project/:id" component={ClientProjectDetail} />
       <Route path={"/404"} component={NotFound} />

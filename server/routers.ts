@@ -449,6 +449,12 @@ export const appRouter = router({
         z.object({
           projectId: z.number(),
           message: z.string().min(1),
+          attachments: z.array(z.object({
+            fileName: z.string(),
+            fileUrl: z.string(),
+            fileType: z.string().optional(),
+            fileSize: z.number().optional(),
+          })).optional(),
         })
       )
       .mutation(async ({ input, ctx }) => {

@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS `quote_templates` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `description` text,\n  `category` varchar(100),\n  `base_price` int NOT NULL,\n  `labor_hours` int DEFAULT 0,\n  `hourly_rate` int DEFAULT 0,\n  `material_cost` int DEFAULT 0,\n  `markup_percentage` int DEFAULT 0,\n  `notes` text,\n  `is_active` int DEFAULT 1 NOT NULL,\n  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `quote_templates_id` PRIMARY KEY(`id`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user K1xVwB5r2zRvmWP.root --database 9pySWwyY5hFhv5B9L6cX5F --execute CREATE TABLE IF NOT EXISTS `quote_templates` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `description` text,\n  `category` varchar(100),\n  `base_price` int NOT NULL,\n  `labor_hours` int DEFAULT 0,\n  `hourly_rate` int DEFAULT 0,\n  `material_cost` int DEFAULT 0,\n  `markup_percentage` int DEFAULT 0,\n  `notes` text,\n  `is_active` int DEFAULT 1 NOT NULL,\n  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `quote_templates_id` PRIMARY KEY(`id`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1514
+}

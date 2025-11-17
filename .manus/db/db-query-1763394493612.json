@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS `message_attachments` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `message_id` int NOT NULL,\n  `file_name` varchar(255) NOT NULL,\n  `file_url` varchar(500) NOT NULL,\n  `file_type` varchar(100),\n  `file_size` int,\n  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  CONSTRAINT `message_attachments_id` PRIMARY KEY(`id`),\n  CONSTRAINT `message_attachments_message_id_fk` FOREIGN KEY (`message_id`) REFERENCES `project_messages`(`id`) ON DELETE CASCADE\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user K1xVwB5r2zRvmWP.root --database 9pySWwyY5hFhv5B9L6cX5F --execute CREATE TABLE IF NOT EXISTS `message_attachments` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `message_id` int NOT NULL,\n  `file_name` varchar(255) NOT NULL,\n  `file_url` varchar(500) NOT NULL,\n  `file_type` varchar(100),\n  `file_size` int,\n  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  CONSTRAINT `message_attachments_id` PRIMARY KEY(`id`),\n  CONSTRAINT `message_attachments_message_id_fk` FOREIGN KEY (`message_id`) REFERENCES `project_messages`(`id`) ON DELETE CASCADE\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 2002
+}

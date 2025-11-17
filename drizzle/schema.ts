@@ -253,3 +253,41 @@ export const projectMessages = mysqlTable("project_messages", {
 
 export type ProjectMessage = typeof projectMessages.$inferSelect;
 export type InsertProjectMessage = typeof projectMessages.$inferInsert;
+
+/**
+ * Quote templates - Reusable pricing templates for common services
+ */
+export const quoteTemplates = mysqlTable("quote_templates", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  category: varchar("category", { length: 100 }),
+  basePrice: int("base_price").notNull(), // in cents
+  laborHours: int("labor_hours").default(0),
+  hourlyRate: int("hourly_rate").default(0), // in cents
+  materialCost: int("material_cost").default(0), // in cents
+  markupPercentage: int("markup_percentage").default(0), // percentage as integer (e.g., 20 for 20%)
+  notes: text("notes"),
+  isActive: int("is_active").default(1).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type QuoteTemplate = typeof quoteTemplates.$inferSelect;
+export type InsertQuoteTemplate = typeof quoteTemplates.$inferInsert;
+
+/**
+ * Message attachments - Files attached to project messages
+ */
+export const messageAttachments = mysqlTable("message_attachments", {
+  id: int("id").autoincrement().primaryKey(),
+  messageId: int("message_id").notNull().references(() => projectMessages.id, { onDelete: "cascade" }),
+  fileName: varchar("file_name", { length: 255 }).notNull(),
+  fileUrl: varchar("file_url", { length: 500 }).notNull(),
+  fileType: varchar("file_type", { length: 100 }),
+  fileSize: int("file_size"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type MessageAttachment = typeof messageAttachments.$inferSelect;
+export type InsertMessageAttachment = typeof messageAttachments.$inferInsert;

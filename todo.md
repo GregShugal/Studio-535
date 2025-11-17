@@ -218,4 +218,34 @@
 - [x] Implement real-time message updates (5-second polling)
 - [x] Add notification when new messages arrive
 - [x] Test messaging between client and admin
-- [ ] Save checkpoint and push to GitHub
+- [x] Save checkpoint and push to GitHub
+
+## Feature 2: Quote Builder Tool
+- [x] Create quote templates database table
+- [x] Add pricing calculator component
+- [x] Build material cost estimator
+- [x] Add labor hour calculator with hourly rates
+- [x] Create markup/margin calculator
+- [x] Build quote builder UI in admin dashboard
+- [x] Add Quote Builder button to admin dashboard
+- [x] Integrate with existing quote system
+- [x] Test quote builder functionality
+- [x] Save checkpoint
+
+## Feature 3: File Attachments in Messages (In Progress)
+- [x] Add message_attachments table to database
+- [x] Update message creation schema to handle file uploads
+- [ ] Add S3 file upload integration
+- [ ] Add file upload UI to message input
+- [ ] Display attachments in message thread
+- [ ] Add file download functionality
+- [ ] Support images, PDFs, and common file types
+- [ ] Test file attachments and save checkpoint
+
+## Feature 4: Read Receipts & Typing Indicators
+- [ ] Add read_at timestamp to messages table
+- [ ] Create typing indicator real-time system
+- [ ] Add read receipt tracking to backend
+- [ ] Display read receipts in message UI
+- [ ] Show typing indicator when user is typing
+- [ ] Test real-time features and save checkpoint
