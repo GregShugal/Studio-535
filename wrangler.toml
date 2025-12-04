@@ -1,0 +1,21 @@
+name = "studio535"
+compatibility_date = "2024-12-01"
+pages_build_output_dir = "dist/public"
+
+[build]
+command = "pnpm build"
+
+[vars]
+VITE_APP_TITLE = "Studio 535"
+VITE_APP_LOGO = "/logo.svg"
+
+# Environment variables (secrets should be set via Cloudflare dashboard)
+# wrangler secret put DATABASE_URL
+# wrangler secret put JWT_SECRET
+# wrangler secret put GOOGLE_CLIENT_ID
+# wrangler secret put GOOGLE_CLIENT_SECRET
+# wrangler secret put GITHUB_CLIENT_ID
+# wrangler secret put GITHUB_CLIENT_SECRET
+# wrangler secret put AWS_ACCESS_KEY_ID
+# wrangler secret put AWS_SECRET_ACCESS_KEY
+# wrangler secret put STRIPE_SECRET_KEY
