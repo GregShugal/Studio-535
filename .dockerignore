@@ -1,0 +1,46 @@
+# Dependencies (will be installed in container)
+node_modules
+
+# Build output (will be built in container)
+dist
+
+# Git
+.git
+.gitignore
+
+# Environment files (use Secret Manager instead)
+.env
+.env.*
+!.env.example
+
+# Documentation
+*.md
+!README.md
+
+# CI/CD
+.github
+
+# Development files
+examples
+.vscode
+.idea
+*.log
+*.swp
+*.swo
+*~
+
+# Test files
+*.test.ts
+*.spec.ts
+**/__tests__
+coverage
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+tmp
+temp
+*.tmp
